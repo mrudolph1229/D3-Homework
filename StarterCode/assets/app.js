@@ -44,10 +44,10 @@ function makeResponsive() {
     var chartGroup = svg.append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    d3.csv("./assets/data.csv", function(error, healthData) {
-        if (error) return console.warn(error);
+    d3.csv("assets/data.csv").then(function(healthData) {
+        // if (error) return console.warn(error);
 
-        console.log(healthData)
+        console.log(healthData);
 
         healthData.forEach(function(data) {
           data.smokes = +data.smokes;
@@ -60,7 +60,7 @@ function makeResponsive() {
           .range([0, width]);
 
         var yLinearScale = d3.scaleLinear()
-          .domain([0, d3.max(healthData, d => d.smokers)])
+          .domain([0, d3.max(healthData, d => d.smokes)])
           .range([height, 0]);
 
         // create axes
@@ -80,24 +80,24 @@ function makeResponsive() {
         .enter()
         .append("circle")
         .attr("cx", d => xLinearScale(d.age))
-        .attr("cy", d => yLinearScale(d.smokers))
+        .attr("cy", d => yLinearScale(d.smokes))
         .attr("r", "10")
         .attr("fill", "blue")
         .attr("stroke-width", "1")
         .attr("stroke", "black")
-        .attr("opacity", ".8");  
+        .attr("opacity", ".5");
 
-        chartGroup.selectAll("text")
+        chartGroup.append("g").selectAll("text")
         .data(healthData)
         .enter()
         .append("text")
         .text(d => d.abbr)
         .attr("x", d => xLinearScale(d.age))
-        .attr("y", d => yLinearScale(d.smokers))
+        .attr("y", d => yLinearScale(d.smokes))
         .attr("text-anchor", "middle")
         .attr("alignment-baseline", "central")
         .attr("font_family", "sans-serif")
-        .attr("font-size", "11px")
+        .attr("font-size", "10px")
         .attr("fill", "white")
         .style("font-weight", "bold");
 
