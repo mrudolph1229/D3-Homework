@@ -60,12 +60,12 @@ function makeResponsive() {
           .range([0, width]);
 
         var yLinearScale = d3.scaleLinear()
-          .domain([0, d3.max(healthData, d => d.smokes)])
+          .domain([8, d3.max(healthData, d => d.smokes)])
           .range([height, 0]);
 
         // create axes
         var xAxis = d3.axisBottom(xLinearScale);
-        var yAxis = d3.axisLeft(yLinearScale).ticks(6);
+        var yAxis = d3.axisLeft(yLinearScale);
 
         // append axes
         chartGroup.append("g")
@@ -101,8 +101,22 @@ function makeResponsive() {
         .attr("fill", "white")
         .style("font-weight", "bold");
 
-        // console.log(d.age)
-        // console.log(d.smokes)
+        chartGroup.append("text")
+        .attr("transform", `translate(${width / 2}, ${height + margin.top - 10})`)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "16px")
+        .attr("fill", "black")
+        .text("Median Age");
+
+        chartGroup.append("text")
+        .attr("y", 0 - (margin.left / 2))
+        .attr("x", 0 - (height / 2))
+        .attr("text-anchor", "middle")
+        .attr("font-size", "16px")
+        .attr("fill", "black")
+        .attr("transform", "rotate(-90)")
+        .text("Percentage Who Smoke");
+
     })    
 
 };
